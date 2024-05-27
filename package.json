@@ -1,0 +1,39 @@
+{
+  "name": "@yousefhusain/md5",
+  "version": "1.0.0",
+  "description": "MD5 password hash for pure javascript",
+  "types": "types",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write src",
+    "build": "tsc",
+    "postinstall": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yousefhusein/md5.git"
+  },
+  "keywords": [
+    "md5",
+    "password",
+    "hash",
+    "password-hash",
+    "vanilla",
+    "javascript",
+    "browser-hash",
+    "pure-javascript"
+  ],
+  "author": "YousefHusain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yousefhusein/md5/issues"
+  },
+  "homepage": "https://github.com/yousefhusein/md5#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
+}
