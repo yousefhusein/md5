@@ -1,25 +1,40 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.hash = void 0;
-const utf8Encode_1 = require("./utf8Encode");
-function hash(str) {
-    let hashValue = md5(str);
+function utf8Encode(str) {
+    const bytes = [];
+    for (let i = 0; i < str.length; i++) {
+        const charCode = str.charCodeAt(i);
+        if (charCode < 128) {
+            bytes.push(charCode);
+        }
+        else if (charCode < 2048) {
+            bytes.push((charCode >> 6) | 192);
+            bytes.push((charCode & 63) | 128);
+        }
+        else {
+            bytes.push((charCode >> 12) | 224);
+            bytes.push(((charCode >> 6) & 63) | 128);
+            bytes.push((charCode & 63) | 128);
+        }
+    }
+    return new Uint8Array(bytes);
+}
+
+function hash(plainTextPassword) {
+    let hashValue = md5(plainTextPassword);
     for (let i = 1; i < 10; i++)
         hashValue += md5(hashValue);
     return hashValue;
 }
-exports.hash = hash;
 function md5(str) {
     function rotateLeft(n, s) {
         return (n << s) | (n >>> (32 - s));
     }
     const blockSize = 64;
-    const hexChars = "0123456789abcdef";
+    const hexChars = '0123456789abcdef';
     function toHex(n) {
         return hexChars.charAt((n >> 4) & 0x0f) + hexChars.charAt(n & 0x0f);
     }
     // Convert the input string to UTF-8 encoded text
-    const encodedStr = (0, utf8Encode_1.utf8Encode)(str);
+    const encodedStr = utf8Encode(str);
     // Append padding bits and length
     const totalBytes = encodedStr.length;
     const paddingBytes = blockSize - ((totalBytes + 8) % blockSize);
@@ -93,3 +108,9 @@ function md5(str) {
     const generatedHash = toHex(a) + toHex(b) + toHex(c) + toHex(d);
     return generatedHash;
 }
+
+function compare(plainTextPassword, hashedPassword) {
+    return hash(plainTextPassword) === hashedPassword;
+}
+
+export { compare, hash, utf8Encode };
